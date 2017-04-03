@@ -7,7 +7,7 @@
 BASE=$(pwd)
 
 echo
-echo [getESP32.sh]: Checking for system prerequisites
+echo [$0]: Checking for system prerequisites
 #Uncomment for archlinux
 #[[ $(which pacman) ]] && sudo pacman -S --needed gcc git make ncurses flex bison gperf python2-pyserial wget 2>/dev/null
 #Uncomment for ubuntu
@@ -19,7 +19,7 @@ echo
 echo Get or update IDF
 if [ -d esp-idf ]
 then 
-	echo "[getESP32.sh]:  found esp-idf, updating"
+	echo "[$0]:  found esp-idf, updating"
 	cd esp-idf 
 	git pull && git submodule update --recursive 
 	cd $BASE
@@ -34,7 +34,7 @@ echo Get 64 bit linux binary toolchain -- this might get out of date when they c
 
 if [ -d xtensa-esp32-elf ]
 then 
-	echo "[getESP32.sh]:  Found binary toolchain. Performing mandatory replacement"
+	echo "[$0]:  Found binary toolchain. Performing mandatory replacement"
 	rm -rf xtensa-esp32-elf
 	wget https://dl.espressif.com/dl/xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz
 	tar xvzf xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz && \
@@ -60,7 +60,7 @@ echo
 echo Get demo application
 if [ -d esp-idf-template ]
 then 
-	echo "[getESP32.sh]:  Found esp-idf-template, updating"
+	echo "[$0]:  Found esp-idf-template, updating"
 	cd esp-idf-template 
 	git pull 
 	cd $BASE
@@ -75,13 +75,13 @@ fi
 
 echo
 echo Setup environment variables
-echo [getESP32.sh]:  Exporting environment variables:
+echo [$0]:  Exporting environment variables:
 export IDF_PATH=${BASE}/esp-idf
-echo [getESP32.sh]:  export IDF_PATH=${BASE}/esp-idf
+echo [$0]:  export IDF_PATH=${BASE}/esp-idf
 export PATH=$PATH:${BASE}/xtensa-esp32-elf/bin
-echo [getESP32.sh]:  export PATH=$PATH:${BASE}/xtensa-esp32-elf/bin
+echo [$0]:  export PATH=$PATH:${BASE}/xtensa-esp32-elf/bin
 
 echo
 echo IDF demo instructions
-echo [getESP32.sh]:  cd $BASE/esp-idf-template and 
-echo [getESP32.sh]:    type make menuconfig or make flash to get going
+echo [$0]:  cd $BASE/esp-idf-template and 
+echo [$0]:    type make menuconfig or make flash to get going
