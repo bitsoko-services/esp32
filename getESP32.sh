@@ -45,8 +45,8 @@ if [ -f *.tar.gz ] || [ -f *.tar.gz.* ]
 then
 	echo ""
 	echo "[$0]:  Removing residual tar file(s)"
-	rm *.tar.gz
-	rm *.tar.gz.*
+	rm *.tar.gz 2>/dev/null
+	rm *.tar.gz.* 2>/dev/null
 fi
 
 ## Get 64 bit linux binary toolchain -- this might get out of date when they change blobs:
@@ -61,12 +61,12 @@ then
 	echo "[$0]:  Check current version from http://esp-idf.readthedocs.io/en/latest/linux-setup.html"
 	rm -rf xtensa-esp32-elf
 	wget https://dl.espressif.com/dl/xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz
-	tar xvzf xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz && \
-	rm *.tar.gz && rm *.tar.gz.*
+	tar -xvzf xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz
+#	rm *.tar.gz 2>/dev/null && rm *.tar.gz.* 2>/dev/null
 else
 	wget https://dl.espressif.com/dl/xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz
-	tar xvzf xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz && \
-	rm xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz
+	tar -xvzf xtensa-esp32-elf-linux64-1.22.0-61-gab8375a-5.2.0.tar.gz
+	rm *.tar.gz 2>/dev/null && rm *.tar.gz.* 2>/dev/null
 fi
 
 ## Get demo application
@@ -87,7 +87,7 @@ fi
 ## Also, you might copy these lines into a separate script  to reset these variables as necessary.
 
 echo ""
-echo "Setup environment variables"
+echo "[$0]:  Setup environment variables"
 echo "[$0]:  Exporting environment variables:"
 export IDF_PATH=${BASE}/esp-idf
 echo "[$0]:  export IDF_PATH=${BASE}/esp-idf"
