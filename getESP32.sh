@@ -81,6 +81,7 @@ echo [getESP32.sh]:  export IDF_PATH=${BASE}/esp-idf
 export PATH=$PATH:${BASE}/xtensa-esp32-elf/bin
 echo [getESP32.sh]:  export PATH=$PATH:${BASE}/xtensa-esp32-elf/bin
 
-echo Setting up I	DF
+echo
+echo IDF demo instructions
 echo [getESP32.sh]:  cd $BASE/esp-idf-template and 
 echo [getESP32.sh]:    type make menuconfig or make flash to get going
