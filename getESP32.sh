@@ -22,6 +22,7 @@ fi
 if [ $(which apt-get) ]
 then
 	echo "[$0]:  Found Ubuntu based system."
+	sudo apt-get update
 	sudo apt-get install git make libncurses-dev flex bison gperf python python-serial wget 2>/dev/null
 fi
 
