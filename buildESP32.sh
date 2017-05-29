@@ -1,8 +1,8 @@
 ## Author: Elliot Williams
-## Modified by : Felix Omwansa
+## Modified by : Alois Mbutura and Felix Omwansa
 
 echo ""
-echo "[$0]:  This script builds the entire framework for development, a template that is the first of only two steps of building custom projects for the ESP32."
+echo "[$0]:  This script builds the entire development framework, the first of only two steps of building custom projects for the ESP32."
 
 
 ## Install the esp-idf and set required variables
@@ -11,7 +11,6 @@ echo "[$0]:  This script builds the entire framework for development, a template
 
 #The script here is derived from: http://esp-idf.readthedocs.io/en/latest/linux-setup.html
 
-##the 'getESP32.sh' file is unnecessary
 
 BASE=$(pwd)
 
@@ -88,11 +87,13 @@ echo "[$0]:  export IDF_PATH=${BASE}/esp-idf"
 export PATH=$PATH:${BASE}/xtensa-esp32-elf/bin
 echo "[$0]:  export PATH=$PATH:${BASE}/xtensa-esp32-elf/bin"
 
-##move the project builder to the source code directory
+##move the project and builder to the source code directory
 mkdir narra
 mv buildApp.sh narra
+mv ble_app_eddystone narra
 
-##After source code is available the commands to create the source files into subdirectory goes here
+##After source code is available the commands to complete project building go here
+
 cd narra
 
 #Build instructions
