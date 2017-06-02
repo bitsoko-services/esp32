@@ -137,10 +137,10 @@ echo "[$0]: 1. Run 'build_framework' to build the development framework for ESP3
 ##echo "[$0]: 2. Run 'build_app' to compile and flash project in the working directory into the ESP32."
 ##echo "[$0]: 3. Run 'build_flash' to development framework and flash project in one operation."
 echo "[$0]: 4. Run 'quit' to quit."
-echo "[$0]: Run 'buildApp.sh' in esp32-idf-samples/gatt_server_notif_switch to flash the node server project to the ESP32."
+echo "[$0]: Copy 'buildApp.sh' into any project directory and run it to compile and flash the project to the ESP32."
 echo ""
 echo "[$0]: FURTHER PROJECT BUILD INSTRUCTIONS"
-echo "[$0]: Run 'listenNode.sh' in esp32-nodejs-samples to open a notification dialog for to detect action on the ESP32.sh."
+echo "[$0]: Run 'listenNode.sh' in esp32-nodejs-samples to open a notification dialog to detect action on the ESP32.sh."
 echo "[$0]: In case of errors of path configurations, run 'path_config.sh' in esp32 to set the required variables then try again."
 
 	read action
@@ -148,15 +148,15 @@ echo "[$0]: In case of errors of path configurations, run 'path_config.sh' in es
 		if [ $action = build_framework ]
 		then
 			build_framework
-			exit
+			
 		elif [ $action = build_app ]
 		then
 			build_app
-			exit
+			
 		elif [ $action = build_flash ]
 		then
 			build_flash
-			exit
+			
 
 		elif [ $action = quit ]
 		then
