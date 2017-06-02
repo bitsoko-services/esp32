@@ -83,20 +83,25 @@
 	echo "[$0]:  export IDF_PATH=${BASE}/esp-idf"
 	export PATH=$PATH:${BASE}/xtensa-esp32-elf/bin
 	echo "[$0]:  export PATH=$PATH:${BASE}/xtensa-esp32-elf/bin"
+
+		##move the project folders to narra directory
+		mkdir narra
+		mv ble_app_eddystone narra
+		#source project files
+		git clone https://github.com/asukiaaa/esp32-nodejs-samples.git
+		git clone https://github.com/asukiaaa/esp32-idf-samples.git
+
+		mv listenNode.sh esp32-nodejs-samples			
+		mv esp32-nodejs-samples narra
+		mv esp32-idf-samples narra
 }
 
+		
+#BUILDAPP FUNCTION: TO BE USEFUL LATER
 		build_app(){
 		echo ""
 		echo "[$0]:  This compiles and flashes the project into the ESP32."
 		echo "[$0]: NOTE: You should run this function from the working directory."
-
-		##move the project and builder to the source code directory
-		mkdir narra
-		mv ble_app_eddystone narra
-
-		##After source code is available the commands to complete project building go here
-
-		cd narra/ble_app_eddystone
 
 	#compiling and flashing project binaries
 		##Allow read and write access to USB device
@@ -129,9 +134,14 @@ echo "Bitsoko ESP32 script initialized. What would you like to do?"
 echo ""
 
 echo "[$0]: 1. Run 'build_framework' to build the development framework for ESP32 in the working directory."
-echo "[$0]: 2. Run 'build_app' to compile and flash the project in the working directory into the ESP32."
-echo "[$0]: 3. Run 'build_flash' to development framework and flash project in one operation."
+##echo "[$0]: 2. Run 'build_app' to compile and flash project in the working directory into the ESP32."
+##echo "[$0]: 3. Run 'build_flash' to development framework and flash project in one operation."
 echo "[$0]: 4. Run 'quit' to quit."
+echo "[$0]: Run 'buildApp.sh' in esp32-idf-samples/gatt_server_notif_switch to flash the node server project to the ESP32."
+echo ""
+echo "[$0]: FURTHER PROJECT BUILD INSTRUCTIONS"
+echo "[$0]: Run 'listenNode.sh' in esp32-nodejs-samples to open a notification dialog for to detect action on the ESP32.sh."
+echo "[$0]: In case of errors of path configurations, run 'path_config.sh' in esp32 to set the required variables then try again."
 
 	read action
 
