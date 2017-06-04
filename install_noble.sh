@@ -47,6 +47,8 @@ sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
 	fi
 
 ## Install noble
+echo "[$0]: Installating noble... "
+echo ""
 npm install noble
 
 echo "[$0]: Installation complete. "
