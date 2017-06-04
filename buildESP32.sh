@@ -1,15 +1,18 @@
 ## Author: Elliot Williams
 ## Modified by : Alois Mbutura and Felix Omwansa
 
-	build_framework() {
-	echo ""
-	echo "[$0]:  This builds the development framework for the ESP32, and set required variables."
-	echo "[$0]: NOTE: You should run this script from within the destination directory."
+echo ""
+echo "[$0]: Bitsoko ESP32 script initialized"
 
+
+	##FUNCTION: build development framework 
+	build_framework() {
+	echo "FUNCTION: build_framework"
+	echo "[$0]:  This will build the development framework for the ESP32, set the required path variables and move the resource folders into the project folder."
+	
 	## Install the esp-idf and set required variables
 	## BASE variable-This is where you want the entire toolchain to live
 	#The script here is derived from: http://esp-idf.readthedocs.io/en/latest/linux-setup.html
-
 
 	BASE=$(pwd)
 
@@ -84,20 +87,51 @@
 	export PATH=$PATH:${BASE}/xtensa-esp32-elf/bin
 	echo "[$0]:  export PATH=$PATH:${BASE}/xtensa-esp32-elf/bin"
 
-		##move the project folders to narra directory
+		##move the project folders to narra directory:
 		mkdir narra
+
+		##eddystone
 		mv ble_app_eddystone narra
-		#source project files
-		git clone https://github.com/asukiaaa/esp32-nodejs-samples.git
-		git clone https://github.com/asukiaaa/esp32-idf-samples.git
-
-		mv listenNode.sh esp32-nodejs-samples			
-		mv esp32-nodejs-samples narra
-		mv esp32-idf-samples narra
-}
-
 		
-#BUILDAPP FUNCTION: TO BE USEFUL LATER
+		##nodejs
+		mkdir esp32-nodejs-app
+		mv listenNode.sh esp32-nodejs-app
+		mv listen-notification.js esp32-nodejs-app
+		mv gatt_server_notif_switch esp32-nodejs-app
+		mv esp32-nodejs-app narra
+
+echo "[$0]: BUILD SUCCESSFUL"
+echo ""
+pwd
+echo ""
+ls
+echo ""
+	##read user action after completing building the framework
+	custom_app_instructions
+		
+	read action
+		##eddystone	
+		if [ $action = build_eddystone_app ]
+		then
+			build_eddystone_app
+			
+		#nodejs_app		
+		elif [ $action = build_nodejs_app ]
+		then
+			build_nodejs_app
+			
+		#quit	
+		elif [ $action = quit ]
+		then
+		echo ""
+		echo "[$0]: Bitsoko ESP32 script terminated"
+		echo ""
+		fi
+
+}
+##end of function
+		
+		#FUNCTION: compile and flash custom app to the ESP32
 		build_app(){
 		echo ""
 		echo "[$0]:  This compiles and flashes the project into the ESP32."
@@ -106,7 +140,7 @@
 	#compiling and flashing project binaries
 		##Allow read and write access to USB device
 		echo ""
-		echo "[$0]:  Setup access to USB device: the ESP"
+		echo "[$0]:  Setup access to USB device: "
 		sudo chmod a+rw /dev/ttyUSB0
 
 		##configure project
@@ -117,52 +151,113 @@
 		##erase and flash current project to ESP and run serial monitor to view results
 		echo ""
 		echo "[$0]:  Erase everything on device then flash the current project"
-		make erase_flash flash monitor
+		make erase_flash flash
 
+echo "[$0]: BUILD SUCCESSFUL"
+echo ""
+pwd
+echo ""
+ls
+echo ""
+	
 	}
+##end of function
 
-		build_flash(){
-	#building development framework and flash project in one operation
-		build_framework
+		##FUNCTIONS: building custom apps
+		build_eddystone_app(){
+		##run path_config to set up environment variables
+		. path_config.sh
+		cd narra/ble_app_eddystone
+		echo ""
+		pwd
+		echo ""
+		ls
+		echo ""
 		build_app
-}
-####################################
+		make monitor
+
+		
+		}
+
+		build_nodejs_app(){
+		##run path_config to set up environment variables
+		. path_config.sh
+		echo ""
+		pwd
+		echo ""
+		ls
+		echo ""		
+		echo ""
+
+		echo "APP BUILD INSTRUCTIONS"
+		echo ""
+		echo "[$0]: Run 'listenNode.sh' in the terminal that opens AFTER app has been built successfully. This script will open a serial monitor to show the notification dialog box that detects action on the ESP."
+		
+		cd narra/esp32-nodejs-app/gatt_server_notif_switch
+		build_app
+		##open separate terminal  created by the "listenNode.sh"
+		gnome-terminal
+		make monitor
+
+		}
+
+		##any other build function goes here
+		####################################
+
 #Build instructions
+
+		custom_app_instructions(){
+			echo ""
+			echo "[$0]: 2. Run 'build_eddystone_app' to compile and flash the eddystone project to the ESP32."
+			echo ""
+			echo "[$0]: 3. Run 'build_nodejs_app' to compile and flash the nodejs_app project to the ESP32."
+			echo ""
+			echo "[$0]: 4. Run 'quit' to quit."
+			echo ""		
+
+}
+
+
 echo ""
 echo "[$0]:  PROJECT BUILD INSTRUCTIONS"
-echo "Bitsoko ESP32 script initialized. What would you like to do?"
 echo ""
-
-echo "[$0]: 1. Run 'build_framework' to build the development framework for ESP32 in the working directory."
-##echo "[$0]: 2. Run 'build_app' to compile and flash project in the working directory into the ESP32."
-##echo "[$0]: 3. Run 'build_flash' to development framework and flash project in one operation."
+echo "NOTE: All commands should be run from the current directory, and custom apps can only be build after the framework has been setup."
+echo ""
+echo "What would you like to do?"
+echo ""
+echo "[$0]: 1. Run 'build_framework' to setup the development framework for ESP32 in the working directory."
+echo ""
+echo "[$0]: 2. Run 'build_eddystone_app' to compile and flash the eddystone project to the ESP32."
+echo ""
+echo "[$0]: 3. Run 'build_nodejs_app' to compile and flash the nodejs_app project to the ESP32."
+echo ""
 echo "[$0]: 4. Run 'quit' to quit."
-echo "[$0]: Copy 'buildApp.sh' into any project directory and run it to compile and flash the project to the ESP32."
 echo ""
-echo "[$0]: FURTHER PROJECT BUILD INSTRUCTIONS"
-echo "[$0]: Run 'listenNode.sh' in esp32-nodejs-samples to open a notification dialog to detect action on the ESP32.sh."
-echo "[$0]: In case of errors of path configurations, run 'path_config.sh' in esp32 to set the required variables then try again."
 
 	read action
-
+		##framework
 		if [ $action = build_framework ]
 		then
 			build_framework
-			
-		elif [ $action = build_app ]
+		
+		##eddystone	
+		elif [ $action = build_eddystone_app ]
 		then
-			build_app
+			build_eddystone_app
 			
-		elif [ $action = build_flash ]
+		#nodejs_app		
+		elif [ $action = build_nodejs_app ]
 		then
-			build_flash
+			build_nodejs_app
 			
-
+		#quit	
 		elif [ $action = quit ]
 		then
-			exit
+		echo ""
+		echo "[$0]: Bitsoko ESP32 script terminated"
+		echo ""
 		fi
 
 
-
+##############
 
