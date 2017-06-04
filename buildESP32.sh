@@ -95,8 +95,10 @@ echo "[$0]: Bitsoko ESP32 script initialized"
 		
 		##nodejs
 		mkdir esp32-nodejs-app
-		mv listenNode.sh esp32-nodejs-app
+		mv package.json esp32-nodejs-app
+		mv install_noble.sh esp32-nodejs-app
 		mv listen-notification.js esp32-nodejs-app
+		mv listenNode.sh gatt_server_notif_switch
 		mv gatt_server_notif_switch esp32-nodejs-app
 		mv esp32-nodejs-app narra
 
@@ -140,12 +142,12 @@ echo ""
 	#compiling and flashing project binaries
 		##Allow read and write access to USB device
 		echo ""
-		echo "[$0]:  Setup access to USB device: "
+		echo "[$0]:  Setup access to USB device... "
 		sudo chmod a+rw /dev/ttyUSB0
 
 		##configure project
 		echo ""
-		echo "[$0]:  Run configuration menu"
+		echo "[$0]:  Run configuration menu..."
 		make menuconfig
 
 		##erase and flash current project to ESP and run serial monitor to view results
@@ -191,14 +193,17 @@ echo ""
 
 		echo "APP BUILD INSTRUCTIONS"
 		echo ""
-		echo "[$0]: Run 'listenNode.sh' in the terminal that opens AFTER app has been built successfully. This script will open a serial monitor to show the notification dialog box that detects action on the ESP."
+		echo "[$0]: Run 'listenNode.sh' in the terminal that opens AFTER this app has been built successfully. This script will open a serial monitor to show the notification dialog box that detects action on the ESP."
 		
 		cd narra/esp32-nodejs-app/gatt_server_notif_switch
 		build_app
-		##open separate terminal  created by the "listenNode.sh"
+		##open separate terminal to run "listenNode.sh"
+		echo ""
+		echo "[$0]: Run 'listenNode.sh' in the terminal that opens AFTER this app has been built successfully. This script will open a serial monitor to show the notification dialog box that detects action on the ESP."	
 		gnome-terminal
 		make monitor
-
+		
+	
 		}
 
 		##any other build function goes here
