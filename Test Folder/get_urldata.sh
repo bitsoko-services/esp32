@@ -1,4 +1,4 @@
-#Author: Felix Omwansa
+#Authors: Allan Juma and Felix Omwansa
 
 ##buildESP32_update: get data for broadcast_url from Bitsoko server
 ##Parsing a json response of a url to a file     
@@ -34,18 +34,19 @@
 
 	
 	echo ""
-	echo "[$0]:	creating json file to store response..."
+	echo "[$0]:	creating data file to store response..."
 	sleep 3
 
-	if [ -f test.json ] 
+	if [ -f urlData.txt ] 
 	then
-		rm test.json
+		rm urlData.txt
 	fi
-	#create json file to store response
-	echo "${RESP}" | jq . >> test.json
 	
-	echo "[$0]:	url data : "
-	jq -r '.[].name' test.json
-	#prints value of 'name'
-	sleep 3
+	#directly pipe required url data to urlData.txt
+	echo "${RESP}" | jq -r '.[].name' >> urlData.txt
+	
+	echo ""
+	echo "[$0]:	finished"
+	sleep 3	
 
+####
